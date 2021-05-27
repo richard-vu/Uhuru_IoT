@@ -16,7 +16,7 @@ services:
     networks:
       - node-red-net
     volumes:
-      - C:/Uhuru-IoT/IoT/node-red-data:/data
+      - C:/Uhuru-IoT/UhuruIoT/node-red-data:/data
     restart: always
 
 volumes:
