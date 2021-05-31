@@ -11,7 +11,7 @@ ParetoChartHighChart.defaultSettings = {
   HorizontalAxis: "value",
   Legend: "reason",
   Timestamp: "ts",
-  Title: "Pareto Chart high charts",
+  Title: "Highcharts Box Plot",
 };
 
 ParetoChartHighChart.settings = EnebularIntelligence.SchemaProcessor(
@@ -34,7 +34,7 @@ function createParetoChartHighChart(that) {
     },
 
     title: {
-      text: "Highcharts Box Plot Example",
+      text: that.settings.Title,
     },
 
     legend: {
@@ -235,7 +235,7 @@ ParetoChartHighChart.prototype.refresh = function () {
       },
 
       title: {
-        text: "Highcharts Box Plot Example",
+        text: that.settings.Title,
       },
 
       legend: {
