@@ -1,7 +1,7 @@
 {
-  "name": "linechart",
+  "name": "pareto_chart_highcharts",
   "version": "1.1.0",
-  "description": "linechart",
+  "description": "pareto_chart_highcharts",
   "main": "",
   "dependencies": {
     "c3": "^0.4.22",
