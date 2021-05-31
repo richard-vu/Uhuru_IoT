@@ -1,7 +1,8 @@
 var d3 = require("d3");
 var Highcharts = require("highcharts");
-require("highcharts/modules/pareto")(Highcharts);
-var moment = require("moment");
+require("highcharts/modules/exporting")(Highcharts);
+require("highcharts/highcharts-more")(Highcharts);
+require("highcharts/modules/accessibility")(Highcharts);
 var colData = [];
 var categoryX = [];
 var seriesData = [];
@@ -29,56 +30,77 @@ function createParetoChartHighChart(that) {
   ConvertDataAPI(that);
   that.paretoChartHighChartC3 = Highcharts.chart("root", {
     chart: {
-      renderTo: "root",
-      type: "column",
+      type: "boxplot",
     },
+
     title: {
-      text: that.settings.Title,
+      text: "Highcharts Box Plot Example",
     },
-    tooltip: {
-      shared: true,
+
+    legend: {
+      enabled: false,
     },
+
     xAxis: {
-      categories: categoryX,
-      crosshair: true,
+      categories: ["1", "2", "3", "4", "5"],
+      title: {
+        text: "Experiment No.",
+      },
     },
-    yAxis: [
-      {
-        title: {
-          text: "value",
-        },
+
+    yAxis: {
+      title: {
+        text: "Observations",
       },
-      {
-        title: {
-          text: "",
+      plotLines: [
+        {
+          value: 932,
+          color: "red",
+          width: 1,
+          label: {
+            text: "Theoretical mean: 932",
+            align: "center",
+            style: {
+              color: "gray",
+            },
+          },
         },
-        minPadding: 0,
-        maxPadding: 0,
-        max: 100,
-        min: 0,
-        opposite: true,
-        labels: {
-          format: "{value}%",
-        },
-      },
-    ],
+      ],
+    },
+
     series: [
       {
-        type: "pareto",
-        name: "Pareto",
-        yAxis: 1,
-        zIndex: 10,
-        baseSeries: 1,
+        name: "Observations",
+        data: [
+          [760, 801, 848, 895, 965],
+          [733, 853, 939, 980, 1080],
+          [714, 762, 817, 870, 918],
+          [724, 802, 806, 871, 950],
+          [834, 836, 864, 882, 910],
+        ],
         tooltip: {
-          valueDecimals: 2,
-          valueSuffix: "%",
+          headerFormat: "<em>Experiment No {point.key}</em><br/>",
         },
       },
       {
-        name: that.settings.Legend,
-        type: "column",
-        zIndex: 2,
-        data: seriesData,
+        name: "Outliers",
+        color: Highcharts.getOptions().colors[0],
+        type: "scatter",
+        data: [
+          // x, y positions where 0 is the first category
+          [0, 644],
+          [4, 718],
+          [4, 951],
+          [4, 969],
+        ],
+        marker: {
+          fillColor: "white",
+          lineWidth: 1,
+          lineColor: Highcharts.getOptions().colors[0],
+        },
+        tooltip: {
+          pointFormat: "Observation: {point.y}",
+        },
       },
     ],
   });
@@ -209,56 +231,77 @@ ParetoChartHighChart.prototype.refresh = function () {
   if (that.paretoChartHighChartC3) {
     that.barChartHighChartC3 = Highcharts.chart("root", {
       chart: {
-        renderTo: "root",
-        type: "column",
+        type: "boxplot",
       },
+
       title: {
-        text: that.settings.Title,
+        text: "Highcharts Box Plot Example",
       },
-      tooltip: {
-        shared: true,
+
+      legend: {
+        enabled: false,
       },
+
       xAxis: {
-        categories: categoryX,
-        crosshair: true,
+        categories: ["1", "2", "3", "4", "5"],
+        title: {
+          text: "Experiment No.",
+        },
       },
-      yAxis: [
-        {
-          title: {
-            text: "value",
-          },
+
+      yAxis: {
+        title: {
+          text: "Observations",
         },
-        {
-          title: {
-            text: "",
+        plotLines: [
+          {
+            value: 932,
+            color: "red",
+            width: 1,
+            label: {
+              text: "Theoretical mean: 932",
+              align: "center",
+              style: {
+                color: "gray",
+              },
+            },
           },
-          minPadding: 0,
-          maxPadding: 0,
-          max: 100,
-          min: 0,
-          opposite: true,
-          labels: {
-            format: "{value}%",
-          },
-        },
-      ],
+        ],
+      },
+
       series: [
         {
-          type: "pareto",
-          name: "Pareto",
-          yAxis: 1,
-          zIndex: 10,
-          baseSeries: 1,
+          name: "Observations",
+          data: [
+            [760, 801, 848, 895, 965],
+            [733, 853, 939, 980, 1080],
+            [714, 762, 817, 870, 918],
+            [724, 802, 806, 871, 950],
+            [834, 836, 864, 882, 910],
+          ],
           tooltip: {
-            valueDecimals: 2,
-            valueSuffix: "%",
+            headerFormat: "<em>Experiment No {point.key}</em><br/>",
           },
         },
         {
-          name: that.settings.Legend,
-          type: "column",
-          zIndex: 2,
-          data: seriesData,
+          name: "Outliers",
+          color: Highcharts.getOptions().colors[0],
+          type: "scatter",
+          data: [
+            // x, y positions where 0 is the first category
+            [0, 644],
+            [4, 718],
+            [4, 951],
+            [4, 969],
+          ],
+          marker: {
+            fillColor: "white",
+            lineWidth: 1,
+            lineColor: Highcharts.getOptions().colors[0],
+          },
+          tooltip: {
+            pointFormat: "Observation: {point.y}",
+          },
         },
       ],
     });
