@@ -1,7 +1,7 @@
 {
-  "name": "linechart",
+  "name": "histgram_highcharts",
   "version": "1.1.0",
-  "description": "linechart",
+  "description": "histgram_highcharts",
   "main": "",
   "dependencies": {
     "c3": "^0.4.22",
