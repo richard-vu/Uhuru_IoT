@@ -6,29 +6,33 @@ require("highcharts/modules/accessibility")(Highcharts);
 var colData = [];
 var categoryX = [];
 var seriesData = [];
+var experimentNo = [];
+var observations = [];
+var experimentNoTemp = [];
+var observationsTemp = [];
 
-ParetoChartHighChart.defaultSettings = {
+BoxPlotHighCharts.defaultSettings = {
   HorizontalAxis: "value",
-  Legend: "reason",
+  Legend: "Observations",
   Timestamp: "ts",
   Title: "Highcharts Box Plot",
 };
 
-ParetoChartHighChart.settings = EnebularIntelligence.SchemaProcessor(
+BoxPlotHighCharts.settings = EnebularIntelligence.SchemaProcessor(
   [
     {
       type: "text",
       name: "Title",
     },
   ],
-  ParetoChartHighChart.defaultSettings
+  BoxPlotHighCharts.defaultSettings
 );
 
-function createParetoChartHighChart(that) {
+function createBoxPlotHighCharts(that) {
   if (seriesData != []) seriesData = [];
   if (categoryX != []) categoryX = [];
   ConvertDataAPI(that);
-  that.paretoChartHighChartC3 = Highcharts.chart("root", {
+  that.boxPlotHighChartsC3 = Highcharts.chart("root", {
     chart: {
       type: "boxplot",
     },
@@ -42,7 +46,7 @@ function createParetoChartHighChart(that) {
     },
 
     xAxis: {
-      categories: ["1", "2", "3", "4", "5"],
+      categories: experimentNo,
       title: {
         text: "Experiment No.",
       },
@@ -71,13 +75,7 @@ function createParetoChartHighChart(that) {
     series: [
       {
         name: "Observations",
-        data: [
-          [760, 801, 848, 895, 965],
-          [733, 853, 939, 980, 1080],
-          [714, 762, 817, 870, 918],
-          [724, 802, 806, 871, 950],
-          [834, 836, 864, 882, 910],
-        ],
+        data: observations,
         tooltip: {
           headerFormat: "<em>Experiment No {point.key}</em><br/>",
         },
@@ -106,7 +104,7 @@ function createParetoChartHighChart(that) {
   });
 }
 
-function ParetoChartHighChart(settings, options) {
+function BoxPlotHighCharts(settings, options) {
   var that = this;
   this.el = window.document.createElement("div");
   this.el.id = "chart";
@@ -123,11 +121,12 @@ function ParetoChartHighChart(settings, options) {
   this.margin = { top: 20, right: 80, bottom: 30, left: 50 };
 
   setTimeout(function () {
-    createParetoChartHighChart(that);
+    createBoxPlotHighCharts(that);
   }, 100);
 }
 
-ParetoChartHighChart.prototype.addData = function (data) {
+BoxPlotHighCharts.prototype.addData = function (data) {
+  console.log(data);
   var that = this;
   function fireError(err) {
     if (that.errorCallback) {
@@ -144,21 +143,23 @@ ParetoChartHighChart.prototype.addData = function (data) {
 
     this.filteredData = data
       .filter((d) => {
-        let hasLabel = d.hasOwnProperty("reason");
-        const dLabel = d["reason"];
-        if (typeof dLabel !== "string") {
-          fireError("VerticalAxis is not a string");
+        let hasLabel = d.hasOwnProperty("ExperimentNo");
+        const dLabel = d["ExperimentNo"];
+        if (typeof dLabel !== "number") {
+          fireError("VerticalAxis is not a number");
           hasLabel = false;
         }
+        console.log("ExperimentNo", hasLabel);
         return hasLabel;
       })
       .filter((d) => {
-        let hasLabel = d.hasOwnProperty(value);
-        const dLabel = d[value];
-        if (typeof dLabel !== "string" && typeof dLabel !== "number") {
-          fireError("VerticalAxis is not a string or number");
+        let hasLabel = d.hasOwnProperty("Observations");
+        const dLabel = d["Observations"];
+        if (typeof dLabel !== "number") {
+          fireError("VerticalAxis is not a number");
           hasLabel = false;
         }
+        console.log("value", hasLabel);
         return hasLabel;
       })
       .filter((d) => {
@@ -167,12 +168,16 @@ ParetoChartHighChart.prototype.addData = function (data) {
           fireError("timestamp is not a number");
           hasTs = false;
         }
+        console.log("hasTs", hasTs);
         return hasTs;
       })
-      .sort((a, b) => b.value - a.value);
+      .sort((a, b) => b.Observations - a.Observations);
+    console.log("this.filteredData", this.filteredData);
+
     if (this.filteredData.length === 0) {
       return;
     }
+
     this.data = d3
       .nest()
       .key(function (d) {
@@ -184,13 +189,14 @@ ParetoChartHighChart.prototype.addData = function (data) {
         if (a.key > b.key) return 1;
         return 0;
       });
+    console.log("this.data", this.data);
     this.convertData();
   } else {
     fireError("no data");
   }
 };
 
-ParetoChartHighChart.prototype.clearData = function () {
+BoxPlotHighCharts.prototype.clearData = function () {
   this.data = {};
   colData = [];
   seriesData = [];
@@ -198,28 +204,38 @@ ParetoChartHighChart.prototype.clearData = function () {
   this.refresh();
 };
 
-ParetoChartHighChart.prototype.convertData = function () {
+BoxPlotHighCharts.prototype.convertData = function () {
   colData = this.data;
+  console.log("colData", colData);
   this.refresh();
 };
 
 function ConvertDataAPI(that) {
   categoryX = [];
   seriesData = [];
+  experimentNoTemp = [];
+  observationsTemp = [];
   colData.forEach(function (val, index) {
     for (var i = 0; i < val.values.length; i++) {
-      seriesData.push(colData[index]["values"][i]["value"]);
-      categoryX.push(colData[index]["values"][i]["reason"]);
+      console.log("val", i, ": ", val);
+      experimentNoTemp.push(colData[index]["values"][i]["ExperimentNo"]);
+      observationsTemp.push(colData[index]["values"][i]["Observations"]);
+      experimentNo.push(experimentNoTemp);
+      observations.push(observationsTemp);
+      console.log("experimentNoTemp", experimentNoTemp);
+      console.log("observationsTemp", observationsTemp);
+      console.log("experimentNo", experimentNo);
+      console.log("observations", observations);
     }
   });
 }
 
-ParetoChartHighChart.prototype.resize = function (options) {
+BoxPlotHighCharts.prototype.resize = function (options) {
   this.width = options.width;
   this.height = options.height - 50;
 };
 
-ParetoChartHighChart.prototype.refresh = function () {
+BoxPlotHighCharts.prototype.refresh = function () {
   var that = this;
 
   ConvertDataAPI(that);
@@ -228,7 +244,7 @@ ParetoChartHighChart.prototype.refresh = function () {
   if (this.axisY) this.axisY.remove();
   if (this.yText) this.yText.remove();
 
-  if (that.paretoChartHighChartC3) {
+  if (that.boxPlotHighChartsC3) {
     that.barChartHighChartC3 = Highcharts.chart("root", {
       chart: {
         type: "boxplot",
@@ -243,7 +259,7 @@ ParetoChartHighChart.prototype.refresh = function () {
       },
 
       xAxis: {
-        categories: ["1", "2", "3", "4", "5"],
+        categories: experimentNo,
         title: {
           text: "Experiment No.",
         },
@@ -272,13 +288,7 @@ ParetoChartHighChart.prototype.refresh = function () {
       series: [
         {
           name: "Observations",
-          data: [
-            [760, 801, 848, 895, 965],
-            [733, 853, 939, 980, 1080],
-            [714, 762, 817, 870, 918],
-            [724, 802, 806, 871, 950],
-            [834, 836, 864, 882, 910],
-          ],
+          data: observations,
           tooltip: {
             headerFormat: "<em>Experiment No {point.key}</em><br/>",
           },
@@ -289,10 +299,7 @@ ParetoChartHighChart.prototype.refresh = function () {
           type: "scatter",
           data: [
             // x, y positions where 0 is the first category
-            [0, 644],
-            [4, 718],
-            [4, 951],
-            [4, 969],
+
           ],
           marker: {
             fillColor: "white",
@@ -308,17 +315,14 @@ ParetoChartHighChart.prototype.refresh = function () {
   }
 };
 
-ParetoChartHighChart.prototype.onError = function (errorCallback) {
+BoxPlotHighCharts.prototype.onError = function (errorCallback) {
   this.errorCallback = errorCallback;
 };
 
-ParetoChartHighChart.prototype.getEl = function () {
+BoxPlotHighCharts.prototype.getEl = function () {
   return this.el;
 };
 
-window.EnebularIntelligence.register(
-  "paretoChartHighChart",
-  ParetoChartHighChart
-);
+window.EnebularIntelligence.register("boxPlotHighCharts", BoxPlotHighCharts);
 
-module.exports = ParetoChartHighChart;
+module.exports = BoxPlotHighCharts;
