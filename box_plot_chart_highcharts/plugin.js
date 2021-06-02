@@ -9,6 +9,7 @@ var seriesData = [];
 var experimentNo = [];
 var sum = 0;
 var avg = 0;
+var x;
 var observations;
 
 BoxPlotHighCharts.defaultSettings = {
@@ -59,11 +60,11 @@ function createBoxPlotHighCharts(that) {
       },
       plotLines: [
         {
-          value: 760,
+          value: avg,
           color: "red",
           width: 1,
           label: {
-            text: "Theoretical mean: 700",
+            text: "Average  mean: ", avg,
             align: "center",
             style: {
               color: "gray",
@@ -77,10 +78,6 @@ function createBoxPlotHighCharts(that) {
       {
         name: "Observations",
         data: observations,
-        // data: [
-        //   [760, 801, 848, 895, 965],
-        //   [733, 853, 939, 980, 1080],
-        // ],
         tooltip: {
           headerFormat: "<em>Experiment No {point.key}</em><br/>",
         },
@@ -213,29 +210,15 @@ function ConvertDataAPI(that) {
   observations = x.map((item) =>
     item.values.map((subItem) => subItem.Observations).sort()
   );
-
-  // let sum = 0;
-  // for (let i = 0; i < observations.length; i++) {
-  //   for (let j = 0; j < observations[i].length; j++) {
-  //     sum += array[i][j];
-  //   }
-  // }
-  // console.log("sum", sum);
-  // console.log("observations", observations);
-
-  // colData.forEach(function (val, index) {
-  //   for (var i = 0; i < val.values.length; i++) {
-  //     console.log("val", i, ": ", val);
-
-  //     experimentNoTemp.push(colData[index]["values"][i]["ExperimentNo"]);
-  //     observationsTemp.push(colData[index]["values"][i]["Observations"]);
-  //     experimentNo.push(experimentNoTemp);
-
-  //     console.log("experimentNoTemp", experimentNoTemp);
-  //     console.log("observationsTemp", observationsTemp);
-  //     // console.log("experimentNo", experimentNo);
-  //   }
-  // });
+  console.log("observations", observations);
+  x = observations;
+  for (let i = 0; i < x.length; i++) {
+    for (let j = 0; j < x.length; j++) {
+      sum += x[i][j];
+      console.log("sum", sum);
+    }
+  }
+  avg = sum / (x.length * 5);
 }
 
 BoxPlotHighCharts.prototype.resize = function (options) {
@@ -281,11 +264,11 @@ BoxPlotHighCharts.prototype.refresh = function () {
         plotLines: [
           {
             // Trung bình
-            value: 760,
+            value: avg,
             color: "red",
             width: 1,
             label: {
-              text: "Theoretical mean: 700",
+              text: "Theoretical mean: ", avg,
               align: "center",
               style: {
                 color: "gray",
