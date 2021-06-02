@@ -7,9 +7,9 @@ var colData = [];
 var categoryX = [];
 var seriesData = [];
 var experimentNo = [];
-var observations = [];
-var experimentNoTemp = [];
-var observationsTemp = [];
+var sum = 0;
+var avg = 0;
+var observations;
 
 BoxPlotHighCharts.defaultSettings = {
   HorizontalAxis: "value",
@@ -46,7 +46,8 @@ function createBoxPlotHighCharts(that) {
     },
 
     xAxis: {
-      categories: experimentNo,
+      // categories: experimentNo,
+      // categories: ["1", "2"],
       title: {
         text: "Experiment No.",
       },
@@ -58,11 +59,11 @@ function createBoxPlotHighCharts(that) {
       },
       plotLines: [
         {
-          value: 932,
+          value: 760,
           color: "red",
           width: 1,
           label: {
-            text: "Theoretical mean: 932",
+            text: "Theoretical mean: 700",
             align: "center",
             style: {
               color: "gray",
@@ -76,6 +77,10 @@ function createBoxPlotHighCharts(that) {
       {
         name: "Observations",
         data: observations,
+        // data: [
+        //   [760, 801, 848, 895, 965],
+        //   [733, 853, 939, 980, 1080],
+        // ],
         tooltip: {
           headerFormat: "<em>Experiment No {point.key}</em><br/>",
         },
@@ -199,46 +204,38 @@ BoxPlotHighCharts.prototype.convertData = function () {
   this.refresh();
 };
 
-function unique(arr) {
-  var obj = {}
-  var newArr = []
-  for (let i = 0; i < arr.length; i++) {
-    if (!obj[arr[i]]) {
-      obj[arr[i]] = 1
-      newArr.push(arr[i])
-    }
-  }
-  return newArr
-}
-
 function ConvertDataAPI(that) {
   categoryX = [];
   seriesData = [];
-  experimentNoTemp = [];
-  observationsTemp = [];
   let temp = [];
   console.log("colData", colData);
-  colData.forEach(function (val, index) {
-    for (var i = 0; i < val.values.length; i++) {
-      console.log("val", i, ": ", val);
-      // if (colData[index]["values"][i]["ExperimentNo"] == val.key) {
-      //   console.log("Testing");
-      //   temp.push(colData[index]["values"][i]["Observations"]);
+  let x = colData;
+  observations = x.map((item) =>
+    item.values.map((subItem) => subItem.Observations).sort()
+  );
 
+  // let sum = 0;
+  // for (let i = 0; i < observations.length; i++) {
+  //   for (let j = 0; j < observations[i].length; j++) {
+  //     sum += array[i][j];
+  //   }
+  // }
+  // console.log("sum", sum);
+  // console.log("observations", observations);
 
-      //   console.log("temp", temp);
-      // }
+  // colData.forEach(function (val, index) {
+  //   for (var i = 0; i < val.values.length; i++) {
+  //     console.log("val", i, ": ", val);
 
-      experimentNoTemp.push(colData[index]["values"][i]["ExperimentNo"]);
-      observationsTemp.push(colData[index]["values"][i]["Observations"]);
-      experimentNo.push(experimentNoTemp);
-      observations.push(observationsTemp);
-      // console.log("experimentNoTemp", experimentNoTemp);
-      console.log("observationsTemp", observationsTemp);
-      // console.log("experimentNo", experimentNo);
-      // console.log("observations", observations);
-    }
-  });
+  //     experimentNoTemp.push(colData[index]["values"][i]["ExperimentNo"]);
+  //     observationsTemp.push(colData[index]["values"][i]["Observations"]);
+  //     experimentNo.push(experimentNoTemp);
+
+  //     console.log("experimentNoTemp", experimentNoTemp);
+  //     console.log("observationsTemp", observationsTemp);
+  //     // console.log("experimentNo", experimentNo);
+  //   }
+  // });
 }
 
 BoxPlotHighCharts.prototype.resize = function (options) {
@@ -270,7 +267,8 @@ BoxPlotHighCharts.prototype.refresh = function () {
       },
 
       xAxis: {
-        categories: experimentNo,
+        // categories: experimentNo,
+        // categories: ["1", "2"],
         title: {
           text: "Experiment No.",
         },
@@ -282,11 +280,12 @@ BoxPlotHighCharts.prototype.refresh = function () {
         },
         plotLines: [
           {
-            value: 932,
+            // Trung bình
+            value: 760,
             color: "red",
             width: 1,
             label: {
-              text: "Theoretical mean: 932",
+              text: "Theoretical mean: 700",
               align: "center",
               style: {
                 color: "gray",
