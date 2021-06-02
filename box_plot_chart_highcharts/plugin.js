@@ -13,7 +13,7 @@ var observationsTemp = [];
 
 BoxPlotHighCharts.defaultSettings = {
   HorizontalAxis: "value",
-  Legend: "Observations",
+  Legend: "ExperimentNo",
   Timestamp: "ts",
   Title: "Highcharts Box Plot",
 };
@@ -86,10 +86,6 @@ function createBoxPlotHighCharts(that) {
         type: "scatter",
         data: [
           // x, y positions where 0 is the first category
-          [0, 644],
-          [4, 718],
-          [4, 951],
-          [4, 969],
         ],
         marker: {
           fillColor: "white",
@@ -126,7 +122,6 @@ function BoxPlotHighCharts(settings, options) {
 }
 
 BoxPlotHighCharts.prototype.addData = function (data) {
-  console.log(data);
   var that = this;
   function fireError(err) {
     if (that.errorCallback) {
@@ -149,7 +144,6 @@ BoxPlotHighCharts.prototype.addData = function (data) {
           fireError("VerticalAxis is not a number");
           hasLabel = false;
         }
-        console.log("ExperimentNo", hasLabel);
         return hasLabel;
       })
       .filter((d) => {
@@ -159,7 +153,6 @@ BoxPlotHighCharts.prototype.addData = function (data) {
           fireError("VerticalAxis is not a number");
           hasLabel = false;
         }
-        console.log("value", hasLabel);
         return hasLabel;
       })
       .filter((d) => {
@@ -168,11 +161,9 @@ BoxPlotHighCharts.prototype.addData = function (data) {
           fireError("timestamp is not a number");
           hasTs = false;
         }
-        console.log("hasTs", hasTs);
         return hasTs;
       })
       .sort((a, b) => b.Observations - a.Observations);
-    console.log("this.filteredData", this.filteredData);
 
     if (this.filteredData.length === 0) {
       return;
@@ -189,7 +180,6 @@ BoxPlotHighCharts.prototype.addData = function (data) {
         if (a.key > b.key) return 1;
         return 0;
       });
-    console.log("this.data", this.data);
     this.convertData();
   } else {
     fireError("no data");
@@ -206,26 +196,47 @@ BoxPlotHighCharts.prototype.clearData = function () {
 
 BoxPlotHighCharts.prototype.convertData = function () {
   colData = this.data;
-  console.log("colData", colData);
   this.refresh();
 };
+
+function unique(arr) {
+  var obj = {}
+  var newArr = []
+  for (let i = 0; i < arr.length; i++) {
+    if (!obj[arr[i]]) {
+      obj[arr[i]] = 1
+      newArr.push(arr[i])
+    }
+  }
+  return newArr
+}
 
 function ConvertDataAPI(that) {
   categoryX = [];
   seriesData = [];
   experimentNoTemp = [];
   observationsTemp = [];
+  let temp = [];
+  console.log("colData", colData);
   colData.forEach(function (val, index) {
     for (var i = 0; i < val.values.length; i++) {
       console.log("val", i, ": ", val);
+      // if (colData[index]["values"][i]["ExperimentNo"] == val.key) {
+      //   console.log("Testing");
+      //   temp.push(colData[index]["values"][i]["Observations"]);
+
+
+      //   console.log("temp", temp);
+      // }
+
       experimentNoTemp.push(colData[index]["values"][i]["ExperimentNo"]);
       observationsTemp.push(colData[index]["values"][i]["Observations"]);
       experimentNo.push(experimentNoTemp);
       observations.push(observationsTemp);
-      console.log("experimentNoTemp", experimentNoTemp);
+      // console.log("experimentNoTemp", experimentNoTemp);
       console.log("observationsTemp", observationsTemp);
-      console.log("experimentNo", experimentNo);
-      console.log("observations", observations);
+      // console.log("experimentNo", experimentNo);
+      // console.log("observations", observations);
     }
   });
 }
@@ -299,7 +310,6 @@ BoxPlotHighCharts.prototype.refresh = function () {
           type: "scatter",
           data: [
             // x, y positions where 0 is the first category
-
           ],
           marker: {
             fillColor: "white",
