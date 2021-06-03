@@ -64,7 +64,7 @@ function createBoxPlotHighCharts(that) {
           color: "red",
           width: 1,
           label: {
-            text: "Average  mean: ", avg,
+            text: `Average  mean:  ${avg}`,
             align: "center",
             style: {
               color: "gray",

@@ -10,7 +10,7 @@
     "Timestamp": "ts",
     "Limit": "100",
     "Format": "YYYY/MM/DD",
-    "Title": "Bar Chart high charts",
+    "Title": "Box Plot Highcharts",
     "Tooltip": [
       {
         "tag": ""
