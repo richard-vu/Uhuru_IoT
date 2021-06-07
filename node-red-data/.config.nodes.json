@@ -587,7 +587,7 @@
                 "types": [
                     "firebase modify"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "local": true,
                 "user": false,
                 "module": "node-red-firebase",
@@ -598,7 +598,7 @@
                 "types": [
                     "firebase query"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "local": true,
                 "user": false,
                 "module": "node-red-firebase",
@@ -609,11 +609,49 @@
                 "types": [
                     "firebase watch"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "local": true,
                 "user": false,
                 "module": "node-red-firebase",
                 "file": "/data/node_modules/node-red-firebase/firebase_watch.js"
+            }
+        }
+    },
+    "node-red-contrib-line-image-api": {
+        "name": "node-red-contrib-line-image-api",
+        "version": "1.0.5",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "line-image": {
+                "name": "line-image",
+                "types": [
+                    "line-image"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-line-image-api",
+                "file": "/data/node_modules/node-red-contrib-line-image-api/node.js"
+            }
+        }
+    },
+    "node-red-contrib-image-output": {
+        "name": "node-red-contrib-image-output",
+        "version": "0.6.2",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "image": {
+                "name": "image",
+                "types": [
+                    "image"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-image-output",
+                "file": "/data/node_modules/node-red-contrib-image-output/image/image.js"
             }
         }
     }

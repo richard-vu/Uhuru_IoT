@@ -6,6 +6,8 @@
     "dependencies": {
         "node-red-contrib-firebase": "~1.1.1",
         "node-red-contrib-firebase-data": "0.0.11",
+        "node-red-contrib-image-output": "~0.6.2",
+        "node-red-contrib-line-image-api": "~1.0.5",
         "node-red-contrib-obniz": "~0.6.2",
         "node-red-firebase": "~0.1.0"
     }
