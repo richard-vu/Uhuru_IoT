@@ -56,6 +56,7 @@ function createHistgramHighCharts(that) {
       histogram: {
         accessibility: {
           pointDescriptionFormatter: function (point) {
+            console.log("point_1: ",point);
             var ix = point.index + 1,
               x1 = point.x.toFixed(3),
               x2 = point.x2.toFixed(3),
@@ -234,6 +235,7 @@ HistgramHighCharts.prototype.refresh = function () {
         histogram: {
           accessibility: {
             pointDescriptionFormatter: function (point) {
+              console.log("point_2: ",point);
               var ix = point.index + 1,
                 x1 = point.x.toFixed(3),
                 x2 = point.x2.toFixed(3),
