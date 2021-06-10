@@ -138,10 +138,10 @@ ParetoChartHighChart.prototype.addData = function (data) {
         item[legend] != undefined &&
         item[legend] != null &&
         item[value] != undefined &&
-        item[value] != null
+        item[value] != null &&
+        item[value] > 0
       ) {
         let index = dataTemple.findIndex((ele) => ele[legend] == item[legend]);
-
         if (index != -1) {
           dataTemple[index][value] += item[value];
         } else {
@@ -232,7 +232,7 @@ function ConvertDataAPI(that) {
     });
     data.forEach((item) => {
       categoryX.push(item.value.reason);
-      seriesData.push(item.value.value);
+      seriesData.push(Math.floor(item.value.value));
     });
   }
 }

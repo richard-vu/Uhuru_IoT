@@ -10136,7 +10136,7 @@ var data = [
   2.8, 2.6, 3, 3.4, 3.1, 3, 3.1, 3.1, 3.1, 2.7, 3.2, 3.3, 3, 2.5, 3, 3.4, 3,
 ];
 
-console.log(data.sort());
+// console.log(data.sort());
 
 var dataX = [
   2, 2.2, 2.2, 2.2, 2.3, 2.3, 2.3, 2.3, 2.4, 2.4, 2.4, 2.5, 2.5, 2.5, 2.5, 2.5,
@@ -10150,3 +10150,76 @@ var dataX = [
   3.6, 3.6, 3.7, 3.7, 3.7, 3.8, 3.8, 3.8, 3.8, 3.8, 3.8, 3.9, 3.9, 4, 4.1, 4.2,
   4.4,
 ];
+
+var dataPareto = [
+  {
+    category: "よごれ",
+    ts: 1622695152821,
+    value: 1.53,
+  },
+  {
+    category: "よごれ",
+    ts: 1622695152821,
+    value: 1.97,
+  },
+  {
+    category: "キズ",
+    ts: 1622695153292,
+    value: -0.86,
+  },
+  {
+    category: "よごれ",
+    ts: 1622695153696,
+    value: -0.03,
+  },
+  {
+    category: "ホコリ",
+    ts: 1622695153759,
+    value: 0.41,
+  },
+  {
+    reason: "キズ",
+    ts: 1622695154158,
+    value: -0.34,
+  },
+  {
+    reason: "へこみ",
+    ts: 1622695154298,
+    value: -0.5,
+  },
+  {
+    reason: "よごれ",
+    ts: 1622695154392,
+    value: 0.1,
+  },
+  {
+    reason: "ホコリ",
+    ts: 1622695154684,
+    value: 1.32,
+  },
+  {
+    reason: "キズ",
+    ts: 1622695154913,
+    value: 1.13,
+  },
+];
+
+var key = "reason";
+
+var xDataPareto = dataPareto.forEach((item) => {
+  if (item[key] && item[key] != undefined &&  item[key] != null && item[value]>0) {
+    console.log(item);
+    return item;
+  }
+});
+
+console.log(xDataPareto);
+
+function getResultPareto(key) {
+  let result = dataPareto.map((pareto) => pareto[key]).filter((ele) => ele);
+  console.log(typeof result[0]);
+  if (result && result[0] && typeof result[0] === "number") {
+    result = result.filter((item) => item > 0).sort((a, b) => b - a);
+  }
+  return result;
+}
